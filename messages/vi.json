@@ -1,0 +1,64 @@
+{
+  "common": {
+    "appName": "Bonby",
+    "loading": "Đang tải...",
+    "error": "Đã xảy ra lỗi!",
+    "errorDescription": "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.",
+    "tryAgain": "Thử lại",
+    "notFound": "Không tìm thấy trang",
+    "notFoundDescription": "Trang bạn tìm kiếm không tồn tại.",
+    "goHome": "Về trang chủ"
+  },
+  "home": {
+    "title": "Bonby Next.js Boilerplate",
+    "description": "Khởi đầu sẵn sàng cho sản phẩm với Next.js 15, Auth.js, Mongoose, TanStack Query và Tailwind CSS.",
+    "goToDashboard": "Đi tới Bảng điều khiển",
+    "signIn": "Đăng nhập",
+    "signUp": "Đăng ký"
+  },
+  "auth": {
+    "signIn": {
+      "title": "Chào mừng trở lại",
+      "description": "Đăng nhập vào tài khoản của bạn để tiếp tục",
+      "email": "Email",
+      "emailPlaceholder": "ban@example.com",
+      "password": "Mật khẩu",
+      "passwordPlaceholder": "Nhập mật khẩu của bạn",
+      "submit": "Đăng nhập",
+      "submitting": "Đang đăng nhập...",
+      "orContinueWith": "Hoặc tiếp tục với",
+      "noAccount": "Chưa có tài khoản?",
+      "signUpLink": "Đăng ký"
+    },
+    "signUp": {
+      "title": "Tạo tài khoản",
+      "description": "Nhập thông tin của bạn để bắt đầu",
+      "name": "Tên",
+      "namePlaceholder": "Nguyễn Văn A",
+      "email": "Email",
+      "emailPlaceholder": "ban@example.com",
+      "password": "Mật khẩu",
+      "passwordPlaceholder": "Tối thiểu 8 ký tự",
+      "confirmPassword": "Xác nhận mật khẩu",
+      "confirmPasswordPlaceholder": "Xác nhận mật khẩu của bạn",
+      "submit": "Tạo tài khoản",
+      "submitting": "Đang tạo tài khoản...",
+      "orContinueWith": "Hoặc tiếp tục với",
+      "hasAccount": "Đã có tài khoản?",
+      "signInLink": "Đăng nhập",
+      "success": "Tạo tài khoản thành công!"
+    },
+    "social": {
+      "google": "Google",
+      "github": "GitHub"
+    },
+    "signOut": "Đăng xuất"
+  },
+  "dashboard": {
+    "title": "Bảng điều khiển",
+    "welcome": "Chào mừng trở lại, {name}!",
+    "role": "Vai trò",
+    "email": "Email",
+    "userId": "ID người dùng"
+  }
+}
