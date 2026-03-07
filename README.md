@@ -54,7 +54,7 @@ A production-ready Next.js 15 starter with authentication, MongoDB, i18n, testin
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) 20 or later
+- [Node.js](https://nodejs.org/) 22 or later
 - [Yarn](https://classic.yarnpkg.com/) 1.x
 - [MongoDB](https://www.mongodb.com/) (local or Atlas) **OR** [Docker](https://www.docker.com/)
 
