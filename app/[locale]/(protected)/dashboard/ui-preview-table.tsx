@@ -98,7 +98,11 @@ export function UiPreviewTable() {
     },
     {
       name: "AspectRatio",
-      preview: <AspectRatio ratio={16 / 9} className="bg-muted max-w-[120px] rounded border" />,
+      preview: (
+        <AspectRatio ratio={16 / 9} className="bg-muted max-w-[120px] rounded border">
+          <div />
+        </AspectRatio>
+      ),
     },
     {
       name: "Avatar",
@@ -322,7 +326,7 @@ export function UiPreviewTable() {
     {
       name: "Radio",
       preview: (
-        <RadioGroup name="preview" defaultValue="a">
+        <RadioGroup name="preview" value="a">
           <Radio value="a" label="Option A" />
           <Radio value="b" label="Option B" />
         </RadioGroup>
