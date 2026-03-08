@@ -75,7 +75,7 @@ function AccordionItem({
         aria-expanded={isOpen}
         aria-controls={`accordion-${id}-content`}
         onClick={onToggle}
-        className="text-foreground hover:bg-muted flex w-full items-center justify-between px-4 py-3 text-left text-sm font-medium transition-colors"
+        className="text-foreground hover:bg-muted flex w-full cursor-pointer items-center justify-between px-4 py-3 text-left text-sm font-medium transition-colors"
       >
         {trigger}
         <span

@@ -55,7 +55,7 @@ export function Button({
     <button
       type="button"
       className={cn(
-        "inline-flex items-center justify-center font-medium transition-colors disabled:pointer-events-none disabled:opacity-50",
+        "inline-flex cursor-pointer items-center justify-center font-medium transition-colors disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
         variantStyles[variant],
         sizeStyles[size],
         fullWidth && "w-full",

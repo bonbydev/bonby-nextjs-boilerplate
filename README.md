@@ -101,6 +101,39 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+### Clean setup for new projects: remove UI preview
+
+The dashboard includes a **UI component preview** table that showcases all shared components from `@/components/ui`. For a clean setup when starting a new project, you can remove it as follows.
+
+**1. Update the dashboard page**
+
+Edit `app/[locale]/(protected)/dashboard/page.tsx`:
+
+- Remove the `UiPreviewTable` import.
+- Remove the "UI components" block (the `<div>` that contains `<h3>UI components</h3>` and `<UiPreviewTable />`).
+
+Example result — the dashboard page should only keep the welcome section and the user info cards (role, email, userId):
+
+```tsx
+// Remove: import { UiPreviewTable } from "./ui-preview-table";
+
+// Remove this block from the return:
+//   <div>
+//     <h3 className="text-muted-foreground mb-2 text-sm font-medium">UI components</h3>
+//     <UiPreviewTable />
+//   </div>
+```
+
+**2. (Optional) Delete the preview component**
+
+To fully clean up, delete the preview client component file:
+
+```bash
+rm app/[locale]/(protected)/dashboard/ui-preview-table.tsx
+```
+
+After these steps, the dashboard shows only the welcome message and user info cards. You can keep the UI preview during development and remove it when you are ready for a production-style dashboard.
+
 ## Environment Configuration
 
 The project supports three environments with separate configuration files:

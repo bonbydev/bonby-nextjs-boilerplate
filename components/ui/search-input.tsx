@@ -36,7 +36,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
             type="button"
             tabIndex={-1}
             onClick={onClear}
-            className="text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2 transition-colors"
+            className="text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer transition-colors"
             aria-label="Clear search"
           >
             <FiX className="h-4 w-4" />

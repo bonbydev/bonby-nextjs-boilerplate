@@ -107,9 +107,9 @@ function PaginationButton({
     <button
       type="button"
       className={cn(
-        "inline-flex h-9 min-w-9 items-center justify-center rounded-lg px-2 text-sm font-medium transition-colors",
+        "inline-flex h-9 min-w-9 cursor-pointer items-center justify-center rounded-lg px-2 text-sm font-medium transition-colors",
         "focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
-        "disabled:pointer-events-none disabled:opacity-50",
+        "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
         active
           ? "bg-primary text-primary-foreground"
           : "hover:bg-secondary text-muted-foreground hover:text-foreground",

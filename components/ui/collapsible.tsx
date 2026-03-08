@@ -37,7 +37,7 @@ export function Collapsible({
         type="button"
         onClick={handleToggle}
         aria-expanded={isOpen}
-        className="flex w-full items-center justify-between"
+        className="flex w-full cursor-pointer items-center justify-between"
       >
         <span className="min-w-0 flex-1 text-left">{trigger}</span>
         <FiChevronDown

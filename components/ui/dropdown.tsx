@@ -60,7 +60,11 @@ export function DropdownTrigger({
   className?: string;
 }) {
   return (
-    <button type="button" onClick={onClick} className={cn("outline-none", className)}>
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn("cursor-pointer outline-none", className)}
+    >
       {children}
     </button>
   );
@@ -90,7 +94,7 @@ export function DropdownItem({
       type="button"
       onClick={onClick}
       className={cn(
-        "text-popover-foreground hover:bg-accent hover:text-accent-foreground w-full px-3 py-2 text-left text-sm transition-colors",
+        "text-popover-foreground hover:bg-accent hover:text-accent-foreground w-full cursor-pointer px-3 py-2 text-left text-sm transition-colors",
         className
       )}
     >

@@ -3,6 +3,8 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { auth } from "@/auth";
 
+import { UiPreviewTable } from "./ui-preview-table";
+
 export const metadata: Metadata = {
   title: "Dashboard",
   description: "Your dashboard",
@@ -40,6 +42,11 @@ export default async function DashboardPage({ params }: Props) {
           <h3 className="text-muted-foreground text-sm font-medium">{t("userId")}</h3>
           <p className="mt-2 truncate font-mono text-sm">{session?.user?.id}</p>
         </div>
+      </div>
+
+      <div>
+        <h3 className="text-muted-foreground mb-2 text-sm font-medium">UI components</h3>
+        <UiPreviewTable />
       </div>
     </div>
   );

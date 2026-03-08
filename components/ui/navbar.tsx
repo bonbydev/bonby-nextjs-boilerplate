@@ -33,7 +33,7 @@ export function Navbar({ logo, children, actions, className, sticky = true }: Na
 
         <button
           type="button"
-          className="text-foreground hover:bg-secondary inline-flex items-center justify-center rounded-lg p-2 transition-colors md:hidden"
+          className="text-foreground hover:bg-secondary inline-flex cursor-pointer items-center justify-center rounded-lg p-2 transition-colors md:hidden"
           onClick={() => setMobileOpen((v) => !v)}
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileOpen}

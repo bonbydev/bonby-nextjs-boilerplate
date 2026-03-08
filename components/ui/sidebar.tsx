@@ -82,7 +82,7 @@ export function SidebarToggle({ className }: { className?: string }) {
       type="button"
       onClick={toggle}
       className={cn(
-        "text-muted-foreground hover:bg-secondary hover:text-foreground flex w-full items-center justify-center rounded-lg p-2 transition-colors",
+        "text-muted-foreground hover:bg-secondary hover:text-foreground flex w-full cursor-pointer items-center justify-center rounded-lg p-2 transition-colors",
         className
       )}
       aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
@@ -107,7 +107,7 @@ export function SidebarItem({ icon, active, children, className, onClick }: Side
       type="button"
       onClick={onClick}
       className={cn(
-        "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+        "flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
         active
           ? "bg-primary/10 text-primary"
           : "text-muted-foreground hover:bg-secondary hover:text-foreground",

@@ -87,7 +87,7 @@ export function SheetClose({ onClose, className }: { onClose: () => void; classN
       type="button"
       onClick={onClose}
       className={cn(
-        "text-muted-foreground hover:text-foreground absolute top-4 right-4 rounded-sm transition-colors",
+        "text-muted-foreground hover:text-foreground absolute top-4 right-4 cursor-pointer rounded-sm transition-colors",
         className
       )}
       aria-label="Close"
