@@ -57,6 +57,12 @@ const eslintConfig = [
     },
   },
   {
+    files: ["scripts/**"],
+    rules: {
+      "no-console": "off",
+    },
+  },
+  {
     ignores: ["node_modules/**", ".next/**", "out/**", "build/**", "next-env.d.ts"],
   },
 ];
