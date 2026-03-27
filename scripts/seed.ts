@@ -1,7 +1,18 @@
+import { loadEnvConfig } from "@next/env";
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/bonby-dev";
+const isDev = process.env.NODE_ENV !== "production";
+
+loadEnvConfig(process.cwd(), isDev);
+
+const MONGODB_URI = process.env.MONGODB_URI!;
+
+if (!MONGODB_URI) {
+  throw new Error(
+    "Please define the MONGODB_URI environment variable before running the seed script."
+  );
+}
 
 const UserSchema = new mongoose.Schema(
   {
@@ -21,13 +32,13 @@ const seedUsers = [
   {
     name: "Admin User",
     email: "admin@example.com",
-    password: "admin123456",
+    password: "Admin@123",
     role: "ADMIN",
   },
   {
     name: "Test User",
     email: "user@example.com",
-    password: "user123456",
+    password: "User@123",
     role: "USER",
   },
 ];
