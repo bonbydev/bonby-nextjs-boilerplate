@@ -1,6 +1,5 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { useActionState, useEffect } from "react";
 import { toast } from "react-toastify";
 
@@ -9,7 +8,7 @@ import { signUpWithCredentials, type AuthResult } from "@/actions/auth.actions";
 const initialState: AuthResult = {};
 
 function inputClass(hasError: boolean) {
-  return `w-full rounded-lg border bg-transparent px-3 py-2 text-sm transition-colors outline-none ${
+  return `w-full rounded-2xl border bg-input px-4 py-3 text-sm transition-colors outline-none ${
     hasError
       ? "border-input-invalid focus:border-input-invalid"
       : "border-input focus:border-input-focus"
@@ -17,7 +16,6 @@ function inputClass(hasError: boolean) {
 }
 
 export function SignUpForm() {
-  const t = useTranslations("auth.signUp");
   const [state, formAction, isPending] = useActionState(signUpWithCredentials, initialState);
 
   useEffect(() => {
@@ -25,63 +23,42 @@ export function SignUpForm() {
       toast.error(state.error);
     }
     if (state.success) {
-      toast.success(t("success"));
+      toast.success("Account created successfully");
     }
-  }, [state, t]);
+  }, [state]);
 
   return (
     <form action={formAction} className="space-y-4">
       <div className="space-y-2">
-        <label htmlFor="name" className="text-sm font-medium">
-          {t("name")}
+        <label htmlFor="username" className="text-sm font-medium">
+          Username
         </label>
         <input
-          id="name"
-          name="name"
+          id="username"
+          name="username"
           type="text"
-          placeholder={t("namePlaceholder")}
+          placeholder="Choose a username"
           required
-          aria-invalid={!!state.fieldErrors?.name}
-          aria-describedby={state.fieldErrors?.name ? "name-error" : undefined}
-          className={inputClass(!!state.fieldErrors?.name)}
+          aria-invalid={!!state.fieldErrors?.username}
+          aria-describedby={state.fieldErrors?.username ? "username-error" : undefined}
+          className={inputClass(!!state.fieldErrors?.username)}
         />
-        {state.fieldErrors?.name && (
-          <p id="name-error" className="text-destructive text-xs" role="alert">
-            {state.fieldErrors.name}
-          </p>
-        )}
-      </div>
-
-      <div className="space-y-2">
-        <label htmlFor="email" className="text-sm font-medium">
-          {t("email")}
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          placeholder={t("emailPlaceholder")}
-          required
-          aria-invalid={!!state.fieldErrors?.email}
-          aria-describedby={state.fieldErrors?.email ? "email-error" : undefined}
-          className={inputClass(!!state.fieldErrors?.email)}
-        />
-        {state.fieldErrors?.email && (
-          <p id="email-error" className="text-destructive text-xs" role="alert">
-            {state.fieldErrors.email}
+        {state.fieldErrors?.username && (
+          <p id="username-error" className="text-destructive text-xs" role="alert">
+            {state.fieldErrors.username}
           </p>
         )}
       </div>
 
       <div className="space-y-2">
         <label htmlFor="password" className="text-sm font-medium">
-          {t("password")}
+          Password
         </label>
         <input
           id="password"
           name="password"
           type="password"
-          placeholder={t("passwordPlaceholder")}
+          placeholder="Create a password"
           required
           aria-invalid={!!state.fieldErrors?.password}
           aria-describedby={state.fieldErrors?.password ? "password-error" : undefined}
@@ -96,13 +73,13 @@ export function SignUpForm() {
 
       <div className="space-y-2">
         <label htmlFor="confirmPassword" className="text-sm font-medium">
-          {t("confirmPassword")}
+          Confirm password
         </label>
         <input
           id="confirmPassword"
           name="confirmPassword"
           type="password"
-          placeholder={t("confirmPasswordPlaceholder")}
+          placeholder="Confirm your password"
           required
           aria-invalid={!!state.fieldErrors?.confirmPassword}
           aria-describedby={
@@ -120,9 +97,9 @@ export function SignUpForm() {
       <button
         type="submit"
         disabled={isPending}
-        className="bg-primary text-primary-foreground hover:bg-primary-hover w-full rounded-lg py-2.5 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+        className="bg-primary text-primary-foreground hover:bg-primary-hover w-full rounded-full py-3 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {isPending ? t("submitting") : t("submit")}
+        {isPending ? "Creating account..." : "Create account"}
       </button>
     </form>
   );

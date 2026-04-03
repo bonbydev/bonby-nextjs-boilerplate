@@ -45,21 +45,8 @@ const eslintConfig = [
           "services/**/": "KEBAB_CASE",
           "types/**/": "KEBAB_CASE",
           "validators/**/": "KEBAB_CASE",
-          "i18n/**/": "KEBAB_CASE",
         },
       ],
-    },
-  },
-  {
-    files: ["**/__tests__/**"],
-    rules: {
-      "check-file/folder-naming-convention": "off",
-    },
-  },
-  {
-    files: ["scripts/**"],
-    rules: {
-      "no-console": "off",
     },
   },
   {

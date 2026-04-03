@@ -15,17 +15,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     ...authConfig.providers,
     Credentials({
       credentials: {
-        email: { label: "Email", type: "email" },
+        username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         const validated = signInSchema.safeParse(credentials);
         if (!validated.success) return null;
 
-        const { email, password } = validated.data;
+        const { username, password } = validated.data;
 
         await dbConnect();
-        const user = await User.findOne({ email }).select("+password");
+        const user = await User.findOne({ username: username.toLowerCase() }).select("+password");
         if (!user || !user.password) return null;
 
         const isValid = await bcrypt.compare(password, user.password);
@@ -33,42 +33,25 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         return {
           id: user._id.toString(),
-          name: user.name,
-          email: user.email,
-          image: user.image,
+          name: user.username,
           role: user.role,
         };
       },
     }),
   ],
   callbacks: {
-    async signIn({ user, account }) {
-      if (account?.provider !== "credentials") {
-        await dbConnect();
-        const existingUser = await User.findOne({ email: user.email });
-
-        if (!existingUser) {
-          await User.create({
-            name: user.name,
-            email: user.email,
-            image: user.image,
-            emailVerified: new Date(),
-          });
-        }
-      }
-      return true;
-    },
     async jwt({ token, user }) {
       if (user) {
         token.role = user.role;
+        token.name = user.name;
       }
 
-      if (token.email && !token.role) {
+      if (token.sub && !token.role) {
         await dbConnect();
-        const dbUser = await User.findOne({ email: token.email });
+        const dbUser = await User.findById(token.sub);
         if (dbUser) {
           token.role = dbUser.role;
-          token.sub = dbUser._id.toString();
+          token.name = dbUser.username;
         }
       }
 
@@ -80,6 +63,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       if (token.role) {
         session.user.role = token.role as string;
+      }
+      if (token.name) {
+        session.user.name = token.name;
       }
       return session;
     },
