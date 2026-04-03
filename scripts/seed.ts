@@ -1,12 +1,38 @@
-import { loadEnvConfig } from "@next/env";
+/* eslint-disable no-console */
+import { existsSync, readFileSync } from "node:fs";
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 
-const isDev = process.env.NODE_ENV !== "production";
+function loadEnvFile(path: string) {
+  if (!existsSync(path)) return;
 
-loadEnvConfig(process.cwd(), isDev);
+  const content = readFileSync(path, "utf8");
+  const lines = content.split(/\r?\n/);
 
-const MONGODB_URI = process.env.MONGODB_URI!;
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+
+    const separatorIndex = trimmed.indexOf("=");
+    if (separatorIndex === -1) continue;
+
+    const key = trimmed.slice(0, separatorIndex).trim();
+    const rawValue = trimmed.slice(separatorIndex + 1).trim();
+    const quoted =
+      (rawValue.startsWith('"') && rawValue.endsWith('"')) ||
+      (rawValue.startsWith("'") && rawValue.endsWith("'"));
+    const value = quoted ? rawValue.slice(1, -1) : rawValue;
+
+    if (!process.env[key]) {
+      process.env[key] = value;
+    }
+  }
+}
+
+loadEnvFile(".env.development");
+loadEnvFile(".env.development.local");
+
+const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
   throw new Error(
@@ -14,66 +40,44 @@ if (!MONGODB_URI) {
   );
 }
 
-const UserSchema = new mongoose.Schema(
+const DEFAULT_USERNAME = process.env.SEED_USERNAME || "admin";
+const DEFAULT_PASSWORD = process.env.SEED_PASSWORD || "admin12345";
+const DEFAULT_ROLE = process.env.SEED_ROLE === "ADMIN" ? "ADMIN" : "USER";
+
+const userSchema = new mongoose.Schema(
   {
-    name: { type: String },
-    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
-    emailVerified: { type: Date },
-    image: { type: String },
+    username: { type: String, required: true, unique: true, lowercase: true, trim: true },
     password: { type: String, select: false },
     role: { type: String, default: "USER", enum: ["USER", "ADMIN"], index: true },
   },
   { timestamps: true }
 );
 
-const User = mongoose.models.User || mongoose.model("User", UserSchema);
+const User = mongoose.models.User || mongoose.model("User", userSchema);
 
-const seedUsers = [
-  {
-    name: "Admin User",
-    email: "admin@example.com",
-    password: "Admin@123",
-    role: "ADMIN",
-  },
-  {
-    name: "Test User",
-    email: "user@example.com",
-    password: "User@123",
-    role: "USER",
-  },
-];
+async function seedUser() {
+  await mongoose.connect(MONGODB_URI!);
 
-async function seed() {
-  console.log("Connecting to MongoDB...");
-  await mongoose.connect(MONGODB_URI);
-  console.log("Connected.");
+  const username = DEFAULT_USERNAME.toLowerCase();
+  const password = await bcrypt.hash(DEFAULT_PASSWORD, 12);
 
-  for (const userData of seedUsers) {
-    const existing = await User.findOne({ email: userData.email });
-    if (existing) {
-      console.log(`  Skipping ${userData.email} (already exists)`);
-      continue;
-    }
+  const user = await User.findOneAndUpdate(
+    { username },
+    { username, password, role: DEFAULT_ROLE },
+    { upsert: true, new: true, setDefaultsOnInsert: true }
+  );
 
-    const hashedPassword = await bcrypt.hash(userData.password, 12);
-    await User.create({
-      name: userData.name,
-      email: userData.email,
-      password: hashedPassword,
-      role: userData.role,
-    });
-    console.log(`  Created ${userData.role}: ${userData.email}`);
-  }
-
-  console.log("\nSeed complete. Users:");
-  for (const u of seedUsers) {
-    console.log(`  ${u.email} / ${u.password} (${u.role})`);
-  }
-
-  await mongoose.disconnect();
+  console.log("Seed user ready:");
+  console.log(`username: ${user.username}`);
+  console.log(`password: ${DEFAULT_PASSWORD}`);
+  console.log(`role: ${user.role}`);
 }
 
-seed().catch((err) => {
-  console.error("Seed failed:", err);
-  process.exit(1);
-});
+seedUser()
+  .catch((error) => {
+    console.error("Failed to seed user:", error);
+    process.exitCode = 1;
+  })
+  .finally(async () => {
+    await mongoose.disconnect();
+  });

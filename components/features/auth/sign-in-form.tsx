@@ -1,6 +1,5 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { useActionState, useEffect } from "react";
 import { toast } from "react-toastify";
 
@@ -9,7 +8,6 @@ import { signInWithCredentials, type AuthResult } from "@/actions/auth.actions";
 const initialState: AuthResult = {};
 
 export function SignInForm() {
-  const t = useTranslations("auth.signIn");
   const [state, formAction, isPending] = useActionState(signInWithCredentials, initialState);
 
   useEffect(() => {
@@ -21,43 +19,43 @@ export function SignInForm() {
   return (
     <form action={formAction} className="space-y-4">
       <div className="space-y-2">
-        <label htmlFor="email" className="text-sm font-medium">
-          {t("email")}
+        <label htmlFor="username" className="text-sm font-medium">
+          Username
         </label>
         <input
-          id="email"
-          name="email"
-          type="email"
-          placeholder={t("emailPlaceholder")}
+          id="username"
+          name="username"
+          type="text"
+          placeholder="Enter your username"
           required
-          aria-invalid={!!state.fieldErrors?.email}
-          aria-describedby={state.fieldErrors?.email ? "email-error" : undefined}
-          className={`w-full rounded-lg border bg-transparent px-3 py-2 text-sm transition-colors outline-none ${
-            state.fieldErrors?.email
+          aria-invalid={!!state.fieldErrors?.username}
+          aria-describedby={state.fieldErrors?.username ? "username-error" : undefined}
+          className={`bg-input w-full rounded-2xl border px-4 py-3 text-sm transition-colors outline-none ${
+            state.fieldErrors?.username
               ? "border-input-invalid focus:border-input-invalid"
               : "border-input focus:border-input-focus"
           }`}
         />
-        {state.fieldErrors?.email && (
-          <p id="email-error" className="text-destructive text-xs" role="alert">
-            {state.fieldErrors.email}
+        {state.fieldErrors?.username && (
+          <p id="username-error" className="text-destructive text-xs" role="alert">
+            {state.fieldErrors.username}
           </p>
         )}
       </div>
 
       <div className="space-y-2">
         <label htmlFor="password" className="text-sm font-medium">
-          {t("password")}
+          Password
         </label>
         <input
           id="password"
           name="password"
           type="password"
-          placeholder={t("passwordPlaceholder")}
+          placeholder="Enter your password"
           required
           aria-invalid={!!state.fieldErrors?.password}
           aria-describedby={state.fieldErrors?.password ? "password-error" : undefined}
-          className={`w-full rounded-lg border bg-transparent px-3 py-2 text-sm transition-colors outline-none ${
+          className={`bg-input w-full rounded-2xl border px-4 py-3 text-sm transition-colors outline-none ${
             state.fieldErrors?.password
               ? "border-input-invalid focus:border-input-invalid"
               : "border-input focus:border-input-focus"
@@ -73,9 +71,9 @@ export function SignInForm() {
       <button
         type="submit"
         disabled={isPending}
-        className="bg-primary text-primary-foreground hover:bg-primary-hover w-full rounded-lg py-2.5 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+        className="bg-primary text-primary-foreground hover:bg-primary-hover w-full rounded-full py-3 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {isPending ? t("submitting") : t("submit")}
+        {isPending ? "Signing in..." : "Sign in"}
       </button>
     </form>
   );

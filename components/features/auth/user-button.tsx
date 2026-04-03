@@ -1,50 +1,49 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { FiLogOut, FiUser } from "react-icons/fi";
 
 import { signOutAction } from "@/actions/auth.actions";
 
-import { LocaleSwitcher } from "../locale/locale-switcher";
 import { ThemeToggle } from "../theme/theme-toggle";
 
 export function UserButton() {
   const { data: session } = useSession();
-  const t = useTranslations("auth");
 
   if (!session?.user) return null;
 
   return (
     <div className="flex items-center gap-3">
       <ThemeToggle />
-      <LocaleSwitcher />
-      <div className="flex items-center gap-2">
+      <div className="bg-card/80 border-border flex items-center gap-3 rounded-full border px-2 py-2 shadow-sm backdrop-blur">
         {session.user.image ? (
           <Image
             src={session.user.image}
             alt={session.user.name || "User"}
-            width={32}
-            height={32}
-            className="rounded-full"
+            width={36}
+            height={36}
+            className="rounded-full object-cover"
           />
         ) : (
-          <div className="bg-secondary flex h-8 w-8 items-center justify-center rounded-full">
+          <div className="bg-secondary text-secondary-foreground flex h-9 w-9 items-center justify-center rounded-full">
             <FiUser className="h-4 w-4" />
           </div>
         )}
-        <span className="hidden text-sm font-medium sm:inline">
-          {session.user.name || session.user.email}
-        </span>
+        <div className="hidden min-w-0 sm:block">
+          <p className="truncate text-sm font-semibold">
+            {session.user.name || "Authenticated user"}
+          </p>
+          <p className="text-muted-foreground truncate text-xs">@{session.user.name || "user"}</p>
+        </div>
       </div>
       <form action={signOutAction}>
         <button
           type="submit"
-          className="border-border hover:bg-secondary-hover flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors"
+          className="border-border bg-card/80 hover:bg-secondary-hover flex items-center gap-1.5 rounded-full border px-4 py-2 text-xs font-semibold backdrop-blur transition-colors"
         >
           <FiLogOut className="h-3 w-3" />
-          <span className="hidden sm:inline">{t("signOut")}</span>
+          <span>Sign out</span>
         </button>
       </form>
     </div>
