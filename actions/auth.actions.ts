@@ -34,7 +34,7 @@ export async function signInWithCredentials(
   }
 
   const rawData = {
-    email: formData.get("email"),
+    username: formData.get("username"),
     password: formData.get("password"),
   };
 
@@ -52,16 +52,16 @@ export async function signInWithCredentials(
 
   try {
     await signIn("credentials", {
-      email: validated.data.email,
+      username: validated.data.username.toLowerCase(),
       password: validated.data.password,
-      redirectTo: "/dashboard",
+      redirectTo: "/",
     });
     return { success: true };
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
-          return { error: "Invalid email or password" };
+          return { error: "Invalid username or password" };
         default:
           return { error: "Something went wrong" };
       }
@@ -81,8 +81,7 @@ export async function signUpWithCredentials(
   }
 
   const rawData = {
-    name: formData.get("name"),
-    email: formData.get("email"),
+    username: formData.get("username"),
     password: formData.get("password"),
     confirmPassword: formData.get("confirmPassword"),
   };
@@ -99,23 +98,24 @@ export async function signUpWithCredentials(
     return { fieldErrors };
   }
 
-  const { name, email, password } = validated.data;
+  const { username, password } = validated.data;
 
   try {
     await dbConnect();
 
-    const existingUser = await User.findOne({ email });
+    const normalizedUsername = username.toLowerCase();
+    const existingUser = await User.findOne({ username: normalizedUsername });
     if (existingUser) {
-      return { fieldErrors: { email: "An account with this email already exists" } };
+      return { fieldErrors: { username: "This username is already taken" } };
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
-    await User.create({ name, email, password: hashedPassword });
+    await User.create({ username: normalizedUsername, password: hashedPassword });
 
     await signIn("credentials", {
-      email,
+      username: normalizedUsername,
       password,
-      redirectTo: "/dashboard",
+      redirectTo: "/",
     });
 
     return { success: true };
@@ -125,10 +125,6 @@ export async function signUpWithCredentials(
     }
     throw error;
   }
-}
-
-export async function signInWithOAuth(provider: "google" | "github") {
-  await signIn(provider, { redirectTo: "/dashboard" });
 }
 
 export async function signOutAction() {

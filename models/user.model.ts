@@ -1,10 +1,7 @@
 import mongoose, { type Document } from "mongoose";
 
 export interface IUser extends Document {
-  name?: string;
-  email: string;
-  emailVerified?: Date;
-  image?: string;
+  username: string;
   password?: string;
   role: "USER" | "ADMIN";
   createdAt: Date;
@@ -13,10 +10,7 @@ export interface IUser extends Document {
 
 const UserSchema = new mongoose.Schema<IUser>(
   {
-    name: { type: String },
-    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
-    emailVerified: { type: Date },
-    image: { type: String },
+    username: { type: String, required: true, lowercase: true, trim: true },
     password: { type: String, select: false },
     role: { type: String, default: "USER", enum: ["USER", "ADMIN"], index: true },
   },
@@ -24,5 +18,6 @@ const UserSchema = new mongoose.Schema<IUser>(
 );
 
 UserSchema.index({ createdAt: -1 });
+UserSchema.index({ username: 1 }, { unique: true });
 
 export const User = mongoose.models.User || mongoose.model<IUser>("User", UserSchema);

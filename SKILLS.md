@@ -1,6 +1,6 @@
 ---
 name: nextjs-15-engineering-rules
-description: Next.js 15 engineering rules and implementation standards for AI coding agents working in this repository. Use when creating, editing, refactoring, reviewing, or generating code for this Next.js 15 App Router project. Follow these rules for architecture, file placement, imports, naming, TypeScript, server/client boundaries, authentication, i18n, testing, styling, security, and code quality.
+description: Next.js 15 engineering rules and implementation standards for AI coding agents working in this repository. Use when creating, editing, refactoring, reviewing, or generating code for this Next.js 15 App Router project. Follow these rules for architecture, file placement, imports, naming, TypeScript, server/client boundaries, authentication, styling, security, and code quality.
 ---
 
 # Next.js 15 AI Agent Rules
@@ -19,9 +19,7 @@ Always prefer consistency with the existing codebase over personal preference.
 - Auth.js v5 with JWT sessions
 - MongoDB with Mongoose
 - TanStack Query v5
-- next-intl for i18n
 - Zod for validation
-- Vitest + React Testing Library + Playwright
 - ESLint 9 + Prettier
 
 ## Core Principles
@@ -74,10 +72,6 @@ Use these folder responsibilities strictly:
 - `types/`: shared types and module augmentation
 - `constants/`: static app-wide constants
 - `config/`: validated runtime configuration
-- `i18n/`: locale config and navigation wrappers
-- `messages/`: translation JSON files
-- `scripts/`: development or maintenance scripts
-- `e2e/`: Playwright tests
 
 ### 4) Naming Conventions
 
@@ -90,7 +84,6 @@ Use kebab-case for files and folders unless Next.js requires a special name.
 - Server Actions: `*.actions.ts`
 - Services: `*.service.ts`
 - Models: `*.model.ts`
-- Tests: `*.test.ts` or `*.test.tsx`
 - Types: `*.ts` or `*.d.ts`
 
 #### Allowed Next.js exceptions
@@ -168,15 +161,7 @@ Additional rules:
 - Do not bypass auth checks in server actions, services, or protected UI.
 - Treat auth and authorization as separate checks.
 
-### 11) Internationalization Rules
-
-- Use `next-intl` patterns already present in the repository.
-- Keep user-facing text translatable.
-- Prefer translation keys over hard-coded strings for reusable UI.
-- Use i18n-aware navigation helpers from `@/i18n/navigation` instead of raw `next/link` or `next/navigation` when route locale awareness matters.
-- Keep translation keys stable and descriptive.
-
-### 12) Styling Rules
+### 11) Styling Rules
 
 - Use Tailwind CSS utilities.
 - Keep class lists readable.
@@ -184,18 +169,18 @@ Additional rules:
 - Use `cn()` or repository utility helpers for conditional class names.
 - Do not introduce inline styles unless necessary.
 - Respect dark mode support.
+- Preserve the lime-based light and dark theme tokens already defined in `app/globals.css`.
 - Keep components responsive by default.
 
-### 13) Error Handling Rules
+### 12) Error Handling Rules
 
 - Handle expected errors explicitly.
 - Throw typed or standardized errors for unexpected failures.
 - Avoid swallowing errors silently.
 - Show safe, user-friendly feedback in UI.
 - Log diagnostic details only where appropriate.
-- Preserve Sentry integration patterns.
 
-### 14) Security Rules
+### 13) Security Rules
 
 - Validate all inputs.
 - Sanitize or safely render user-provided content.
@@ -205,16 +190,7 @@ Additional rules:
 - Keep rate limiting on auth-sensitive flows.
 - Avoid creating API surfaces when Server Actions are sufficient.
 
-### 15) Testing Rules
-
-- Add or update tests for meaningful behavior changes.
-- Use Vitest + React Testing Library for unit/component tests.
-- Use Playwright for end-to-end flows.
-- Keep tests deterministic.
-- Test behavior, not implementation trivia.
-- Co-locate unit tests in `__tests__/` folders when that is the project pattern.
-
-### 16) Performance Rules
+### 14) Performance Rules
 
 - Prefer server rendering and streaming when appropriate.
 - Minimize client JavaScript.
@@ -227,9 +203,8 @@ Additional rules:
 
 ```text
 app/
-  [locale]/
-    (auth)/
-    (protected)/
+  (auth)/
+  api/
 actions/
 components/
   features/
@@ -238,15 +213,11 @@ components/
 models/
 hooks/
 lib/
-i18n/
-messages/
 validators/
 types/
 constants/
 config/
 services/
-e2e/
-scripts/
 ```
 
 ## AI Agent Decision Rules
@@ -258,7 +229,6 @@ scripts/
 3. Decide server or client boundary before writing code.
 4. Add validation, auth checks, loading states, and error handling where relevant.
 5. Reuse existing UI primitives, utilities, and patterns first.
-6. Add tests for core behavior.
 
 ### When editing existing code
 
@@ -380,9 +350,6 @@ Before finishing code changes, verify:
 - types are correct
 - lint should pass
 - formatting should pass
-- affected tests should pass
-- new logic has reasonable coverage
-- i18n impact was considered
 - auth impact was considered
 - loading and error states were considered
 
@@ -392,11 +359,10 @@ Before finishing code changes, verify:
 - Do not put business logic in `page.tsx` unless trivial.
 - Do not overuse `use client`.
 - Do not use `any` casually.
-- Do not hard-code user-facing strings in reusable components when translations are expected.
 - Do not fetch data in the browser by default when server fetching is enough.
 - Do not duplicate schemas, constants, or query logic.
 - Do not create generic utility abstractions without evidence of reuse.
-- Do not ignore existing middleware, auth, or i18n patterns.
+- Do not ignore existing middleware or auth patterns.
 - Do not introduce a new library when the current stack already solves the problem.
 
 ## Preferred Output Behavior for AI Agents
@@ -409,7 +375,7 @@ When generating code for this repository, always:
 4. Keep imports ordered.
 5. Use named exports.
 6. Respect server/client boundaries.
-7. Include validation, auth, and i18n considerations when relevant.
+7. Include validation and auth considerations when relevant.
 8. Keep code concise and production-ready.
 9. Avoid placeholder comments like `implement later`.
 10. Make the result fit naturally into this codebase.
@@ -423,7 +389,5 @@ A change is complete only when it is:
 - strongly typed
 - validated where needed
 - secure by default
-- i18n-aware where needed
-- tested where meaningful
 - clean, readable, and minimal
 - aligned with Next.js 15 App Router best practices

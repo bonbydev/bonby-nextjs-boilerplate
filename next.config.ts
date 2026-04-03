@@ -1,11 +1,7 @@
 import type { NextConfig } from "next";
-import createNextIntlPlugin from "next-intl/plugin";
 import bundleAnalyzer from "@next/bundle-analyzer";
-import { withSentryConfig } from "@sentry/nextjs";
 
 const withBundleAnalyzer = bundleAnalyzer({ enabled: process.env.ANALYZE === "true" });
-
-const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const securityHeaders = [
   { key: "X-DNS-Prefetch-Control", value: "on" },
@@ -25,25 +21,6 @@ const nextConfig: NextConfig = {
       headers: securityHeaders,
     },
   ],
-  images: {
-    remotePatterns: [
-      { protocol: "https", hostname: "lh3.googleusercontent.com" },
-      { protocol: "https", hostname: "avatars.githubusercontent.com" },
-    ],
-  },
 };
 
-const sentryConfig = withSentryConfig(withBundleAnalyzer(withNextIntl(nextConfig)), {
-  org: process.env.SENTRY_ORG,
-  project: process.env.SENTRY_PROJECT,
-  silent: !process.env.CI,
-  widenClientFileUpload: true,
-  webpack: {
-    treeshake: {
-      removeDebugLogging: true,
-    },
-  },
-  tunnelRoute: "/monitoring",
-});
-
-export default sentryConfig;
+export default withBundleAnalyzer(nextConfig);
